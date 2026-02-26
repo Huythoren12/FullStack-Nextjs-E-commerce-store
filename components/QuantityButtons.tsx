@@ -18,18 +18,34 @@ const QuantityButtons = ({ product, className }: Props) => {
   const handleRemoveProduct = () => {
     removeItem(product?._id);
     if (itemCount > 1) {
-      toast.success("Quantity Decreased successfully!");
+      toast.success("Quantity Decreased successfully!",{
+        style:{
+          background:"black"
+        }
+      });
     } else {
-      toast.success(`${product?.name?.substring(0, 12)} removed successfully!`);
+      toast.success(`${product?.name?.substring(0, 12)} removed successfully!`,{
+        style:{
+          background:"black"
+        }
+      });
     }
   };
 
   const handleAddToCart = () => {
     if ((product?.stock as number) > itemCount) {
       addItem(product);
-      toast.success("Quantity Increased successfully!");
+      toast.success("Quantity Increased successfully!",{
+        style:{
+          background:"black"
+        }
+      });
     } else {
-      toast.error("Can not add more than available stock");
+      toast.error("Can not add more than available stock",{
+        style:{
+          background:"black"
+        }
+    });
     }
   };
 
