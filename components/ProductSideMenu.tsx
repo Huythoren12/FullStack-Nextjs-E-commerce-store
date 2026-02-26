@@ -14,7 +14,7 @@ const ProductSideMenu = ({
     product?:Product,
     className?:string
 }) => {
-    const {addToFavorite,removeFromFavorite,favoriteProduct} =useStore()
+    const {addToFavorite,favoriteProduct} =useStore()
     const  [existingProduct, setExistingProduct]=useState<Product |null>(null)
     useEffect(()=>{
        const availableProduct = favoriteProduct?.find(
@@ -26,7 +26,11 @@ const ProductSideMenu = ({
         e.preventDefault()
         if(product?._id){
             addToFavorite(product).then(()=>{
-                toast.success(existingProduct ? "Product removed successfully":"Product added successfully")
+                toast.success(existingProduct ? "Product removed successfully":"Product added successfully",{
+                               style:{
+                                background:"black"
+                               }
+                })
             })
         }
     }
@@ -34,11 +38,12 @@ const ProductSideMenu = ({
     <div className={cn("absolute top-2 right-2 hover:cursor-pointer",
                         className
     )}>
-        <button 
-        onClick={(handleFavorite)}
-        className={`p-2.5 rounded-full hover:bg-shop_dark_green hover:text-white hoverEffect ${existingProduct ?"bg-shop_dark_green/80 text-white" :"bg-lightColor/20 "}`}>
-            <Heart size={15}/>
-        </button>
+        <div
+        onClick={handleFavorite}
+        className={`p-2.5 rounded-full hover:bg-shop_dark_green/80 hover:text-white hoverEffect  ${existingProduct ? "bg-shop_dark_green/80 text-white" : "bg-lightColor/10"}`}
+      >
+        <Heart size={15} />
+      </div>
     </div>
   )
 }
