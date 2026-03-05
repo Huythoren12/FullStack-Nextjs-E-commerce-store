@@ -1,12 +1,13 @@
 "use client";
 
-
+import {
+  createCheckoutSession,
+  Metadata,
+} from "@/actions/createCheckoutSession";
 import Container from "@/components/Container";
 import EmptyCart from "@/components/EmptyCart";
 import NoAccessToCart from "@/components/NoAccessToCart";
 import PriceFormattor from "@/components/PriceFormattor";
-
-
 import ProductSideMenu from "@/components/ProductSideMenu";
 import QuantityButtons from "@/components/QuantityButtons";
 import Title from "@/components/Title";
@@ -78,7 +79,26 @@ const CartPage = () => {
     }
   };
 
- 
+  const handleCheckout = async () => {
+    setLoading(true);
+    try {
+      const metadata: Metadata = {
+        orderNumber: crypto.randomUUID(),
+        customerName: user?.fullName ?? "Unknown",
+        customerEmail: user?.emailAddresses[0]?.emailAddress ?? "Unknown",
+        clerkUserId: user?.id,
+        address: selectedAddress,
+      };
+      const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      }
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="bg-gray-50 pb-52 md:pb-10">
       {isSignedIn ? (
@@ -215,7 +235,7 @@ const CartPage = () => {
                           className="w-full rounded-full font-semibold tracking-wide hoverEffect"
                           size="lg"
                           disabled={loading}
-                          
+                          onClick={handleCheckout}
                         >
                           {loading ? "Please wait..." : "Proceed to Checkout"}
                         </Button>
@@ -293,7 +313,7 @@ const CartPage = () => {
                         className="w-full rounded-full font-semibold tracking-wide hoverEffect"
                         size="lg"
                         disabled={loading}
-                       
+                        onClick={handleCheckout}
                       >
                         {loading ? "Please wait..." : "Proceed to Checkout"}
                       </Button>
