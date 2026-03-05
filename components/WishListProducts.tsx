@@ -33,6 +33,8 @@ const WishListProducts = () => {
         });
       }
     };
+  
+
   return (
     <Container>
      {favoriteProduct?.length > 0 ? (
